@@ -13,7 +13,7 @@
   <!-- Add new task -->
   <div>
     <ul>
-      <li v-for="(task, index) in taskList" :key="index">
+      <li v-for="(task, index) in taskList" :key="index" :class="{ statusColor: task.status }">
         <input v-model="task.status" type="checkbox" id="checked" />{{ task.name }}
         <button class="deleteButton" @click="deleteTask(index)">🚫</button>
       </li>
@@ -78,5 +78,12 @@ const deleteTask = (index) => {
 .deleteButton:hover {
   box-shadow: 0 1px 1px 1px rgba(73, 72, 72, 0.2), 0 4px 10px 0 rgba(73, 72, 72, 0.19);
   border-radius: 50px;
+}
+
+.statusColor {
+  background-color: rgb(136, 182, 91);
+  width: 40%;
+  border-radius: 5px;
+  padding: 2px;
 }
 </style>
