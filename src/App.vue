@@ -1,9 +1,9 @@
 <template>
-  <h1>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero nesciunt eum rerum qui animi, quam impedit rem aperiam quas fugit officia voluptatum quaerat, a eius neque iure quisquam harum enim.
-  </h1>
+  <TaskList />
 </template>
 
-<script setup lang="ts">
+<script setup>
+import TaskList from './components/TaskList.vue'
 
 </script>
 
