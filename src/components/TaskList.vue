@@ -106,7 +106,7 @@ const filterUncompleted = () => {
   })
 }
 
-const handleOrderChange = (event) => {
+const handleOrderChange = (event:any) => {
   const selectedValue = event.target.value
   switch (selectedValue) {
     case 'ordered':
