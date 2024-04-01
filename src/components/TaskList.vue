@@ -24,7 +24,7 @@
   <div>
     <h2>Completed</h2>
     <div v-for="(task, index) in completedTasks" :key="index">
-      {{ task.name }} - {{ task.status }}
+      {{ task.name }} → {{ task.status }}
     </div>
   </div>
 
@@ -32,7 +32,7 @@
   <div>
     <h2>Uncompleted</h2>
     <div v-for="(task, index) in unCompletedTasks" :key="index">
-      {{ task.name }} - {{ task.status }}
+      {{ task.name }} → {{ task.status }}
     </div>
   </div>
 </template>
@@ -65,7 +65,7 @@ const unCompletedTasks = computed(() => {
   return taskList.value.filter((task) => !task.status === true)
 })
 
-const deleteTask = (index) => {
+const deleteTask = (index: number) => {
   taskList.value.splice(index, 1)
 }
 </script>
