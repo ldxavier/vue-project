@@ -10,6 +10,17 @@
     <button @click="addTask">Add task</button>
   </div>
 
+  <div>
+    <select name="order" @change="handleOrderChange">
+      <option value="">Select a filter</option>
+      <option value="ordered">Order by name</option>
+      <option value="desordered">Desorder by name</option>
+      <option value="added">Order by addition to list</option>
+      <option value="completed">Completed tasks</option>
+      <option value="uncompleted">Uncompleted tasks</option>
+    </select>
+  </div>
+
   <!-- Add new task -->
   <div>
     <ul>
@@ -50,7 +61,8 @@ const addTask = () => {
   } else {
     taskList.value.push({
       name: newTask.value,
-      status: false
+      status: false,
+      date: Date.now()
     })
     newTask.value = ''
     console.log(taskList.value)
@@ -67,6 +79,53 @@ const unCompletedTasks = computed(() => {
 
 const deleteTask = (index: number) => {
   taskList.value.splice(index, 1)
+}
+
+const sortName = () => {
+  taskList.value.sort((a, b) => a.name.localeCompare(b.name))
+}
+
+const desorderName = () => {
+  taskList.value.sort((a, b) => b.name.localeCompare(a.name))
+}
+
+const sortAdded = () => {
+  //aqui vai ser um filtro para ordenar por data de adição
+  taskList.value.sort((a, b) => a.date - b.date)
+}
+
+const filterCompleted = () => {
+  taskList.value.sort((a, b) => {
+    return a.status === b.status ? 0 : a.status ? -1 : 1
+  })
+}
+
+const filterUncompleted = () => {
+  taskList.value.sort((a, b) => {
+    return a.status === b.status ? 0 : b.status ? -1 : 1
+  })
+}
+
+const handleOrderChange = (event) => {
+  const selectedValue = event.target.value
+  switch (selectedValue) {
+    case 'ordered':
+      sortName()
+      break
+    case 'desordered':
+      desorderName()
+      break
+    case 'added':
+      sortAdded()
+      break
+    case 'completed':
+      filterCompleted()
+      break
+    case 'uncompleted':
+      filterUncompleted()
+      break
+    default:
+  }
 }
 </script>
 
