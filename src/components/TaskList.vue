@@ -1,4 +1,5 @@
 <template>
+  <!-- Input and Button -->
   <div>
     <h1>Task List</h1>
     <input
@@ -10,6 +11,7 @@
     <button @click="addTask">Add task</button>
   </div>
 
+  <!-- Filter tasks -->
   <div>
     <select name="order" @change="handleOrderChange">
       <option value="" disabled selected>Select a filter</option>
@@ -19,6 +21,9 @@
       <option value="completed">Completed tasks</option>
       <option value="uncompleted">Uncompleted tasks</option>
     </select>
+  </div>
+  <div>
+    <button @click="clearAll">Clear</button>
   </div>
 
   <!-- Add new task -->
@@ -49,7 +54,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import type { ITask } from '../types/ITask'
 
 const taskList = ref<ITask[]>([])
@@ -59,15 +64,23 @@ const addTask = () => {
   if (newTask.value === '' || taskList.value.find((task) => task.name === newTask.value)) {
     alert('Please enter a available task')
   } else {
+    // add task to list
     taskList.value.push({
       name: newTask.value,
       status: false,
       date: Date.now()
     })
+    //add task to local storage
+    localStorage.setItem('taskList', JSON.stringify(taskList.value))
     newTask.value = ''
     console.log(taskList.value)
   }
 }
+
+// Save tasks in local storage
+onMounted(() => {
+  taskList.value = JSON.parse(localStorage.getItem('taskList') || '[]')
+})
 
 const completedTasks = computed(() => {
   return taskList.value.filter((task) => task.status === true)
@@ -77,8 +90,18 @@ const unCompletedTasks = computed(() => {
   return taskList.value.filter((task) => !task.status === true)
 })
 
-const deleteTask = (index: number) => {
+// delete task from list
+const deleteTask = (index: any) => {
+  // remove task from list
   taskList.value.splice(index, 1)
+  // update local storage
+  localStorage.setItem('taskList', JSON.stringify(taskList.value))
+}
+
+// clear all tasks
+const clearAll = () => {
+  localStorage.removeItem('taskList')
+  taskList.value = JSON.parse(localStorage.getItem('taskList') || '[]')
 }
 
 const sortName = () => {
@@ -90,7 +113,7 @@ const desorderName = () => {
 }
 
 const sortAdded = () => {
-  //aqui vai ser um filtro para ordenar por data de adição
+  // sort by added date
   taskList.value.sort((a, b) => a.date - b.date)
 }
 
