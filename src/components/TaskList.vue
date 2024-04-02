@@ -92,6 +92,8 @@ const unCompletedTasks = computed(() => {
   return taskList.value.filter((task) => !task.status === true)
 })
 
+
+
 // delete task from list
 const deleteTask = (index: any) => {
   // remove task from list
@@ -108,6 +110,30 @@ const clearAll = () => {
   }
   else {
     return
+  }
+}
+
+
+
+const handleOrderChange = (event: any) => {
+  const selectedValue = event.target.value
+  switch (selectedValue) {
+    case 'ordered':
+      sortName()
+      break
+    case 'desordered':
+      desorderName()
+      break
+    case 'added':
+      sortAdded()
+      break
+    case 'completed':
+      filterCompleted()
+      break
+    case 'uncompleted':
+      filterUncompleted()
+      break
+    default:
   }
 }
 
@@ -134,28 +160,6 @@ const filterUncompleted = () => {
   taskList.value.sort((a, b) => {
     return a.status === b.status ? 0 : b.status ? -1 : 1
   })
-}
-
-const handleOrderChange = (event: any) => {
-  const selectedValue = event.target.value
-  switch (selectedValue) {
-    case 'ordered':
-      sortName()
-      break
-    case 'desordered':
-      desorderName()
-      break
-    case 'added':
-      sortAdded()
-      break
-    case 'completed':
-      filterCompleted()
-      break
-    case 'uncompleted':
-      filterUncompleted()
-      break
-    default:
-  }
 }
 </script>
 
