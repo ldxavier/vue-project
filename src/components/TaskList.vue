@@ -22,6 +22,8 @@
       <option value="uncompleted">Uncompleted tasks</option>
     </select>
   </div>
+
+  <!-- Clear all tasks -->
   <div>
     <button @click="clearAll">Clear</button>
   </div>
@@ -100,8 +102,13 @@ const deleteTask = (index: any) => {
 
 // clear all tasks
 const clearAll = () => {
-  localStorage.removeItem('taskList')
-  taskList.value = JSON.parse(localStorage.getItem('taskList') || '[]')
+  if (confirm('Are you sure you want to clear all tasks?')) {
+    localStorage.removeItem('taskList')
+    taskList.value = JSON.parse(localStorage.getItem('taskList') || '[]')
+  }
+  else {
+    return
+  }
 }
 
 const sortName = () => {
