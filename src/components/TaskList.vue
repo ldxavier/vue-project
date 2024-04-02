@@ -12,7 +12,7 @@
 
   <div>
     <select name="order" @change="handleOrderChange">
-      <option value="">Select a filter</option>
+      <option value="" disabled selected>Select a filter</option>
       <option value="ordered">Order by name</option>
       <option value="desordered">Desorder by name</option>
       <option value="added">Order by addition to list</option>
@@ -106,7 +106,7 @@ const filterUncompleted = () => {
   })
 }
 
-const handleOrderChange = (event:any) => {
+const handleOrderChange = (event: any) => {
   const selectedValue = event.target.value
   switch (selectedValue) {
     case 'ordered':

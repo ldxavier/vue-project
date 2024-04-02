@@ -72,13 +72,13 @@ function __VLS_getVForSourceType<T extends any[]>(source: T): [
 	index: number,
 ][];
 function __VLS_getVForSourceType<T extends { [Symbol.iterator](): Iterator<any> }>(source: T): [
-	item: T extends { [Symbol.iterator](): Iterator<infer T1> } ? T1 : never, 
+	item: T extends { [Symbol.iterator](): Iterator<infer T1> } ? T1 : never,
 	key: number,
 	index: undefined,
 ][];
 // #3845
 function __VLS_getVForSourceType<T extends number | { [Symbol.iterator](): Iterator<any> }>(source: T): [
-	item: number | (Exclude<T, number> extends { [Symbol.iterator](): Iterator<infer T1> } ? T1 : never), 
+	item: number | (Exclude<T, number> extends { [Symbol.iterator](): Iterator<infer T1> } ? T1 : never),
 	key: number,
 	index: undefined,
 ][];
