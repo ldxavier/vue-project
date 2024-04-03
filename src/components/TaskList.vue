@@ -1,44 +1,52 @@
 <template>
   <!-- Input and Button -->
-  <div>
+  <div class="d-flex justify-center mt-6">
     <h1>Task List</h1>
-    <input
-      @keyup.enter="addTask"
-      v-model="newTask"
-      type="text"
-      placeholder="Enter some task here"
-    />
-    <button @click="addTask">Add task</button>
   </div>
 
-  <!-- Filter tasks -->
-  <div>
-    <select name="order" @change="handleOrderChange">
-      <option value="" disabled selected>Select a filter</option>
-      <option value="ordered">Order by name</option>
-      <option value="desordered">Desorder by name</option>
-      <option value="added">Order by addition to list</option>
-      <option value="completed">Completed tasks</option>
-      <option value="uncompleted">Uncompleted tasks</option>
-    </select>
-  </div>
+  <v-container>
+    <v-card variant="outlined" class="mx-auto" width="60%">
+      <v-text-field @keyup.enter="addTask" v-model="newTask" placeholder="Enter some task here">
+        <v-btn rounded @click="addTask" variant="outlined" size="small">Add</v-btn>
+      </v-text-field>
+      <v-card-actions class="d-flex justify-space-around" v-if="taskList.length > 0">
+        <select name="order" @change="handleOrderChange">
+          <option value="" disabled selected>Select a filter</option>
+          <option value="ordered">Order by name</option>
+          <option value="desordered">Desorder by name</option>
+          <option value="added">Order by addition to list</option>
+          <option value="completed">Completed tasks</option>
+          <option value="uncompleted">Uncompleted tasks</option>
+        </select>
+        <v-btn rounded @click="clearAll" variant="elevated" color="grey-lighten-2" size="small"
+          >Clear</v-btn
+        >
+      </v-card-actions>
+      <v-card-text class="d-flex justify-center" v-else> No tasks available </v-card-text>
 
-  <!-- Clear all tasks -->
-  <div>
-    <button @click="clearAll">Clear</button>
-  </div>
+      <v-card-item v-for="(task, index) in taskList" :key="index">
+        <v-divider class="border-opacity-50"></v-divider>
+        <div>
+          <div class="text-caption">
+            {{ task.status ? 'Completed' : 'Uncompleted' }}
+          </div>
+          <div class="text-h5 d-flex justify-space-evenly">
+            <v-sheet class="ma-2 pa-2">
+              <input v-model="task.status" type="checkbox" id="checked" />
+            </v-sheet>
+            <v-sheet class="ma-2 pa-2 me-auto">
+              {{ task.name }}
+            </v-sheet>
+            <v-sheet class="ma-2 pa-2 me-10">
+              <button class="deleteButton text-h4" @click="deleteTask(index)">␡</button>
+            </v-sheet>
+          </div>
+        </div>
+      </v-card-item>
+    </v-card>
+  </v-container>
 
-  <!-- Add new task -->
-  <div>
-    <ul>
-      <li v-for="(task, index) in taskList" :key="index" :class="{ statusColor: task.status }">
-        <input v-model="task.status" type="checkbox" id="checked" />{{ task.name }}
-        <button class="deleteButton" @click="deleteTask(index)">🚫</button>
-      </li>
-    </ul>
-  </div>
-
-  <!-- Completed tasks -->
+  <!-- Completed tasks
   <div>
     <h2>Completed</h2>
     <div v-for="(task, index) in completedTasks" :key="index">
@@ -46,13 +54,13 @@
     </div>
   </div>
 
-  <!-- Uncompleted tasks -->
+   Uncompleted tasks
   <div>
     <h2>Uncompleted</h2>
     <div v-for="(task, index) in unCompletedTasks" :key="index">
       {{ task.name }} → {{ task.status }}
     </div>
-  </div>
+  </div>-->
 </template>
 
 <script setup lang="ts">
@@ -61,6 +69,13 @@ import type { ITask } from '../types/ITask'
 
 const taskList = ref<ITask[]>([])
 const newTask = ref<string>('')
+const items = [
+  'Order by name',
+  'Desorder by name',
+  'Order by addition to list',
+  'Completed tasks',
+  'Uncompleted tasks'
+]
 
 const addTask = () => {
   if (newTask.value === '' || taskList.value.find((task) => task.name === newTask.value)) {
@@ -92,8 +107,6 @@ const unCompletedTasks = computed(() => {
   return taskList.value.filter((task) => !task.status === true)
 })
 
-
-
 // delete task from list
 const deleteTask = (index: any) => {
   // remove task from list
@@ -107,13 +120,10 @@ const clearAll = () => {
   if (confirm('Are you sure you want to clear all tasks?')) {
     localStorage.removeItem('taskList')
     taskList.value = JSON.parse(localStorage.getItem('taskList') || '[]')
-  }
-  else {
+  } else {
     return
   }
 }
-
-
 
 const handleOrderChange = (event: any) => {
   const selectedValue = event.target.value
@@ -164,6 +174,15 @@ const filterUncompleted = () => {
 </script>
 
 <style scoped>
+select {
+  padding: 2px;
+  font-size: 15px;
+  border-radius: 8px;
+  border: 1px solid #535353;
+  background: #fff url('https://www.freeiconspng.com/uploads/arrow-up-icon-23.png') no-repeat;
+  background-size: 13px;
+  background-position: right 10px center;
+}
 .deleteButton {
   background-color: transparent;
   border: none;

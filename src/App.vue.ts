@@ -1,7 +1,6 @@
 /* __placeholder__ */
 
 
-
 const { defineProps, defineSlots, defineEmits, defineExpose, defineModel, defineOptions, withDefaults, } = await import('vue');
 let __VLS_modelEmitsType!: {};
 
